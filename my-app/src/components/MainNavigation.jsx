@@ -3,14 +3,14 @@ import { AppBar, Box, Toolbar, Typography, InputBase, IconButton, Button } from 
 import SearchIcon from '@mui/icons-material/Search';
 import { alpha, styled } from '@mui/system';
 
-console.log(theme.palette.common.white);
+
 // Custom styled components
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white || '#fff', 0.15),
+  backgroundColor: alpha( '#fff', 0.15),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white || '#fff', 0.25),
+    backgroundColor: alpha('#fff', 0.25),
   },
   marginLeft: 0,
   width: '100%',
