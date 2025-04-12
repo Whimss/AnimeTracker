@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { AppBar, Box, Toolbar, Typography, InputBase, IconButton, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import MenuIcon from '@mui/icons-material/Menu';
 import { alpha, styled } from '@mui/system';
+
 
 
 // Custom styled components
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha( '#fff', 0.15),
+  backgroundColor: alpha('#fff', 0.15),
   '&:hover': {
     backgroundColor: alpha('#fff', 0.25),
   },
@@ -61,9 +63,19 @@ function SearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            MUI Search App Bar
+            Anime List Tracker
           </Typography>
+
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -73,11 +85,14 @@ function SearchAppBar() {
               inputProps={{ 'aria-label': 'search' }}
               value={searchQuery}
               onChange={handleSearchChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearchSubmit();
+                }
+              }}
             />
           </Search>
-          <Button color="inherit" onClick={handleSearchSubmit}>
-            Search
-          </Button>
+          
         </Toolbar>
       </AppBar>
     </Box>
