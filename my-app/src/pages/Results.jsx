@@ -1,32 +1,30 @@
 import React, {useEffect,useContext,useState}from 'react';
 import { SearchContext } from '../context/search';
+import AnimeList from '../components/AnimeList';
+import { Box } from '@mui/system';
+import { Typography } from '@mui/material';
 
 const Results = () => {
-    const search = useContext(SearchContext);
+   const search = useContext(SearchContext);
     const [dataExists, setDataExists] = useState(true)
     useEffect (() => {
-        if (!search.animeData || search.animeData.length === 0){
+        if (search.animeData === undefined || search.animeData.length === 0){
             try {
-                const storedData = JSON.parse(localStorage.getItem('myData'));
-                if (storedData && storedData.length > 0) {
-                    search.setData(storedData);
-                    setDataExists(true);
-                  } else {
-                    setDataExists(false);
-                  }
-               
+                search.animeData = JSON.parse(localStorage.getItem('myData'));
                 
                 setDataExists(true);
+                
             } catch (error) {
                 console.log(error);
                 setDataExists(false);
             }
         }
-        console.log(search.anime);
+        console.log(search.animeData);
     }, [search]);
-    return (<div>
-        {(dataExists && 'Data Exists') || 'Data Does Not Exist'}
-    </div>);
+    return (<Box mt={2}>
+        {(dataExists && <AnimeList data={search.animeData}/>) || <Typography variant="h4">Data Does Not Exist</Typography>}
+    </Box>); 
+  
 };
 
 export default Results;

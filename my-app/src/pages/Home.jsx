@@ -13,9 +13,10 @@ const Home = () => {
     const handleSearch =(event) => {
         event.preventDefault();
         search.search(input).then((data) => {
-        search.setData(data.results);
+        search.setData(data.data);
         localStorage.setItem('myData',JSON.stringify(data.results));
-        navigate('/results');
+       navigate('/results');
+       
         });
     }
     return (
