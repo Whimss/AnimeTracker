@@ -7,20 +7,24 @@ import { Typography } from '@mui/material';
 const Results = () => {
    const search = useContext(SearchContext);
     const [dataExists, setDataExists] = useState(true)
-    useEffect (() => {
-        if (search.animeData === undefined || search.animeData.length === 0){
-            try {
-                search.animeData = JSON.parse(localStorage.getItem('myData'));
-                
-                setDataExists(true);
-                
-            } catch (error) {
-                console.log(error);
-                setDataExists(false);
+    useEffect(() => {
+        if (!search.animeData || search.animeData.length === 0) {
+          try {
+            const localData = JSON.parse(localStorage.getItem('myData'));
+            if (localData) {
+              search.setData(localData);  // <-- Use your context setter!
+              setDataExists(true);
+            } else {
+              setDataExists(false);
             }
+          } catch (error) {
+            console.log(error);
+            setDataExists(false);
+          }
         }
         console.log(search.animeData);
-    }, [search]);
+      }, [search]);
+      
     return (<Box mt={2}>
         {(dataExists && <AnimeList data={search.animeData}/>) || <Typography variant="h4">Data Does Not Exist</Typography>}
     </Box>); 

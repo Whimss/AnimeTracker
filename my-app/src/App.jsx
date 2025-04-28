@@ -1,5 +1,5 @@
 import './index.scss';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Results from './pages/Results';
@@ -25,6 +25,13 @@ function App() {
       `https://api.jikan.moe/v4/anime?q=${searchTerm}&limit=20`
     ).then((response) => response.json());
   }
+
+  useEffect(() => {
+    // If you're not already on the home page, go to '/'
+    if (window.location.pathname !== '/') {
+      window.location.pathname = '/';
+    }
+  }, []); 
 
   return (
     <SearchContext.Provider value={{ search, animeData, setData, singleData, setSingle }}>

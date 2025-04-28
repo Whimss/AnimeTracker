@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { AppBar, Box, Toolbar, Typography, InputBase, IconButton, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import { alpha, styled } from '@mui/system';
+import { SearchContext } from '../context/search';
+import { useNavigate } from 'react-router-dom';
 
 
-
-// Custom styled components
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -50,13 +50,24 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function SearchAppBar() {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  const search = useContext(SearchContext)
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const handleSearchSubmit = () => {
-    console.log('Searching for:', searchQuery);
+  const handleSearchSubmit = (event) => {
+    if (event) event.preventDefault(); 
+    if (!searchQuery) return;
+
+    search.search(searchQuery).then((data) => {
+      search.setData(data.data);
+      localStorage.setItem('myData', JSON.stringify(data.data));
+      navigate('/results');
+    }).catch((error) => {
+      console.error("Search error:", error);
+    });
   };
 
   return (
@@ -92,7 +103,7 @@ function SearchAppBar() {
               }}
             />
           </Search>
-          
+
         </Toolbar>
       </AppBar>
     </Box>

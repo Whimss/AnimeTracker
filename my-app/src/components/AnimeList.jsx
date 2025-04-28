@@ -1,13 +1,19 @@
 import React from "react";
 import AnimeCard from "./AnimeCard";
-import { ImageList } from "@mui/material";
+import { ImageList, Box } from "@mui/material";
 
 const AnimeList = (props) => {
     return (
-        <ImageList>
-            {props.data.map((anime) =>(
-            <AnimeCard key={anime.mal_id}anime={anime}/>))}
-        </ImageList>
+        <Box sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 2,
+            padding: 2,
+        }}>
+            {props.data.map((anime) => (
+                <AnimeCard key={anime.mal_id} anime={anime} />))}
+        </Box>
     );
 };
 export default AnimeList;

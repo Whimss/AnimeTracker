@@ -1,14 +1,22 @@
 .animeCard_container {
-    margin:10px;
+    margin: 10px;
+    width: 250px;  // <--- Add this to lock card width
+  }
+  
+  .animeCard_paper {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #FFCCCC !important;
+    height: 100%;
+  }
+  .animeCard_paper {
+    transition: transform 0.2s;
     
-}
-
-.animeCard_paper {
-display:flex;
-align-items: center;
-align-content:center;
-justify-content: center;
-flex-direction: column;
-padding: 10px;
-background-color: #FFCCCC !important;
-}
+    &:hover {
+      transform: scale(1.05);
+    }
+  }

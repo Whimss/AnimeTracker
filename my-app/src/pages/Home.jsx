@@ -14,7 +14,7 @@ const Home = () => {
         event.preventDefault();
         search.search(input).then((data) => {
         search.setData(data.data);
-        localStorage.setItem('myData',JSON.stringify(data.results));
+        localStorage.setItem('myData',JSON.stringify(data.data));
        navigate('/results');
        
         });
