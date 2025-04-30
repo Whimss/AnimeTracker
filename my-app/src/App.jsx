@@ -1,11 +1,14 @@
 import './index.scss';
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Results from './pages/Results';
 import SingleView from './pages/SingleView';
 import MainNavigation from './components/MainNavigation';
 import { SearchContext } from './context/search';
+import { AuthProvider } from './components/AuthProvider'; // Import
+import SignInPage from './pages/SignInPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
 
@@ -26,27 +29,47 @@ function App() {
     ).then((response) => response.json());
   }
 
-  useEffect(() => {
-    // If you're not already on the home page, go to '/'
-    if (window.location.pathname !== '/') {
-      window.location.pathname = '/';
-    }
-  }, []); 
+
 
   return (
-    <SearchContext.Provider value={{ search, animeData, setData, singleData, setSingle }}>
-      <Router>
-        <MainNavigation />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/results" element={<Results />} />
-            <Route path="/single-view" element={<SingleView />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
-      </Router>
-    </SearchContext.Provider>
+    <AuthProvider>
+      <SearchContext.Provider value={{ search, animeData, setData, singleData, setSingle }}>
+        <Router>
+          <MainNavigation />
+          <main>
+            <Routes>
+              <Route path="/signin" element={<SignInPage />} />
+
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/results"
+                element={
+                  <ProtectedRoute>
+                    <Results />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/single-view"
+                element={
+                  <ProtectedRoute>
+                    <SingleView />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+        </Router>
+      </SearchContext.Provider>
+    </AuthProvider>
   );
 }
 
