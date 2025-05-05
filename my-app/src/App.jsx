@@ -9,6 +9,7 @@ import { SearchContext } from './context/search';
 import { AuthProvider } from './components/AuthProvider'; // Import
 import SignInPage from './pages/SignInPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import MyAnimeList from './pages/MyAnimeList';
 
 function App() {
 
@@ -61,6 +62,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <SingleView />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-anime-list"
+                element={
+                  <ProtectedRoute>
+                    <MyAnimeList />
                   </ProtectedRoute>
                 }
               />

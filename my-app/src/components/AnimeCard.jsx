@@ -3,6 +3,7 @@ import { SearchContext } from "../context/search";
 import { Typography, Link, Paper, Grid } from "@mui/material";
 import './AnimeCard.scss';
 import { useNavigate } from 'react-router-dom';
+import AnimeListManager from "./AnimeListManager";
 
 const AnimeCard = (props) => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const AnimeCard = (props) => {
                 <Typography variant="h5" component="h2">{title}</Typography>
                 <Typography variant="body2" component="h2" paragraph={true}>{synopsis}</Typography>
                 <Link component="button" variant="body1" style={{ marginBottom: 0 }} onClick={onClickHandler}>Learn More</Link>
+                 <AnimeListManager anime={props.anime} />
             </Paper>
         </Grid>
     );

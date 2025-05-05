@@ -144,6 +144,12 @@ function SearchAppBar() {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               >
+                <MenuItem onClick={() => {
+                  handleMenuClose();
+                  navigate('/my-anime-list'); // Or whatever route you set for the list
+                }}>
+                  My Anime List
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </>
