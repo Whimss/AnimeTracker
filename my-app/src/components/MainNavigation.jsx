@@ -1,10 +1,16 @@
-import React, { useState,useContext } from 'react';
-import { AppBar, Box, Toolbar, Typography, InputBase, IconButton, Button } from '@mui/material';
+import React, { useState, useContext } from 'react';
+import {
+  AppBar, Box, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Avatar
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import { alpha, styled } from '@mui/system';
 import { SearchContext } from '../context/search';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../components/AuthProvider';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -52,13 +58,36 @@ function SearchAppBar() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const search = useContext(SearchContext)
+  const { user } = useAuth();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      handleMenuClose();
+      navigate('/signin'); // adjust this path as needed
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
   const handleSearchSubmit = (event) => {
-    if (event) event.preventDefault(); 
+    if (event) event.preventDefault();
     if (!searchQuery) return;
 
     search.search(searchQuery).then((data) => {
@@ -103,6 +132,22 @@ function SearchAppBar() {
               }}
             />
           </Search>
+          {user && (
+            <>
+              <IconButton onClick={handleMenuOpen} color="inherit" sx={{ ml: 2 }}>
+                <Avatar alt={user.displayName || 'User'} src={user.photoURL || ''} />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </>
+          )}
 
         </Toolbar>
       </AppBar>

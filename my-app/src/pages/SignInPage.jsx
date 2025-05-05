@@ -15,7 +15,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import {
   signInWithPopup,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
+  createUserWithEmailAndPassword, setPersistence, browserSessionPersistence
 } from 'firebase/auth';
 import {
   auth,
@@ -35,6 +35,7 @@ const SignInPage = () => {
   const handleProviderSignIn = async (provider) => {
     setLoading(true);
     try {
+      await setPersistence(auth, browserSessionPersistence);
       await signInWithPopup(auth, provider);
       navigate('/');
     } catch (err) {
@@ -48,6 +49,7 @@ const SignInPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
     } catch (err) {
