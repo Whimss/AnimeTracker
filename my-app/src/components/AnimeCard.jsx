@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
 import { SearchContext } from "../context/search";
-import { Typography, Link, Paper, Grid } from "@mui/material";
+import { Typography, Link, Paper, Grid,Box } from "@mui/material";
 import './AnimeCard.scss';
 import { useNavigate } from 'react-router-dom';
-import AnimeListManager from "./AnimeListManager";
+import AddToFavoritesButton from "./AddToFavorites";
+import AddToListButton from "./AddToList";
+import AddToInProgressButton from "./AddToInProgress";
+import AddToWatchLaterButton from "./AddToWatchLater";
 
 const AnimeCard = (props) => {
     const navigate = useNavigate();
@@ -20,7 +23,7 @@ const AnimeCard = (props) => {
     // Check if title and synopsis are not null or undefined
     const title = props.anime.title && props.anime.title.length > 20 ? `${props.anime.title.substring(0, 15)}...` : props.anime.title;
     const synopsis = props.anime.synopsis && props.anime.synopsis.length > 30 ? `${props.anime.synopsis.substring(0, 30)}...` : props.anime.synopsis;
-    
+
     // Check if image exists to avoid undefined errors
     const imageUrl = props.anime.images?.jpg?.image_url || 'default-image-url.png';  // Use a default image if not available
 
@@ -31,7 +34,12 @@ const AnimeCard = (props) => {
                 <Typography variant="h5" component="h2">{title}</Typography>
                 <Typography variant="body2" component="h2" paragraph={true}>{synopsis}</Typography>
                 <Link component="button" variant="body1" style={{ marginBottom: 0 }} onClick={onClickHandler}>Learn More</Link>
-                 <AnimeListManager anime={props.anime} />
+                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', mt: 1 }}>
+                    <AddToListButton anime={props.anime} />
+                    <AddToFavoritesButton anime={props.anime} />
+                    <AddToWatchLaterButton anime={props.anime} />
+                    <AddToInProgressButton anime={props.anime}/>
+                </Box>
             </Paper>
         </Grid>
     );

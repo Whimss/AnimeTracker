@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {
-  AppBar, Box, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Avatar
+  AppBar, Box, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Avatar, Drawer, List, ListItem, ListItemText,ListItemIcon
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthProvider';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 
@@ -59,6 +60,7 @@ function SearchAppBar() {
   const navigate = useNavigate();
   const search = useContext(SearchContext)
   const { user } = useAuth();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -99,6 +101,7 @@ function SearchAppBar() {
     });
   };
 
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -134,24 +137,32 @@ function SearchAppBar() {
           </Search>
           {user && (
             <>
-              <IconButton onClick={handleMenuOpen} color="inherit" sx={{ ml: 2 }}>
+              <IconButton onClick={() => setDrawerOpen(true)} color="inherit" sx={{ ml: 2 }}>
                 <Avatar alt={user.displayName || 'User'} src={user.photoURL || ''} />
               </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleMenuClose}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-              >
-                <MenuItem onClick={() => {
-                  handleMenuClose();
-                  navigate('/my-anime-list'); // Or whatever route you set for the list
-                }}>
-                  My Anime List
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </Menu>
+
+              <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+                <Box sx={{ width: 250, bgcolor: 'primary.main' }} role="presentation">
+                  <List>
+                    <ListItem button onClick={() => {
+                      navigate('/my-anime-list');
+                      setDrawerOpen(false);
+                    }}>
+                      <ListItemText primary="My Anime List" />
+                    </ListItem>
+                    <ListItem button onClick={async () => {
+                      await handleLogout();
+                      setDrawerOpen(false);
+                    }}>
+                      <ListItemIcon>
+                        <LogoutIcon sx={{ color: 'primary.contrastText' }} /> {/* ensures visibility on primary background */}
+                      </ListItemIcon>
+                      <ListItemText primary="Logout" />
+                    </ListItem>
+                  </List>
+                </Box>
+              </Drawer>
+
             </>
           )}
 
