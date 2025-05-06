@@ -14,6 +14,7 @@ export const AnimeActionsProvider = ({ children, fetchAnimeList }) => {
       const userDoc = doc(db, collection, user.uid);
       const animeWithStatus = { ...anime, status };
       await setDoc(userDoc, { [anime.mal_id]: animeWithStatus }, { merge: true });
+      fetchAnimeList();
       return { success: true };
     } catch (error) {
       console.error(`Error adding to ${collection}:`, error);
@@ -30,6 +31,7 @@ export const AnimeActionsProvider = ({ children, fetchAnimeList }) => {
         const currentData = userSnap.data();
         delete currentData[mal_id];
         await setDoc(userDoc, currentData);
+        fetchAnimeList();
         return { success: true };
       } else {
         return { success: false, message: "No data found" };
@@ -40,11 +42,16 @@ export const AnimeActionsProvider = ({ children, fetchAnimeList }) => {
     }
   };
 
-  const addToList = (anime) => addToCollection("animeLists", anime, "listed");
-  const addToWatchLater = (anime) => addToCollection("watchLaterAnime", anime);
+  const addToList = async (anime) => {
+    return await addToCollection("animeLists", anime, "listed");
+  };
 
-  const removeFromList = async (collection, mal_id) => {
-    return await removeFromCollection(collection, mal_id);
+  const addToWatchLater = async (anime) => {
+    return await addToCollection("watchLaterAnime", anime, "watch_later");
+  };
+
+  const removeFromList = async (mal_id) => {
+    return await removeFromCollection("animeLists", mal_id);
   };
 
   const addToInProgress = async (anime) => {
@@ -64,7 +71,7 @@ export const AnimeActionsProvider = ({ children, fetchAnimeList }) => {
           await setDoc(watchLaterRef, watchLaterData);
         }
       }
-  
+      fetchAnimeList();
       return { success: true };
     } catch (error) {
       console.error("Error moving anime to inProgress:", error);
