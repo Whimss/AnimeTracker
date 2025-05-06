@@ -2,7 +2,7 @@
 import React from "react";
 import { useSnackbar } from "../context/SnackBar"; // Adjust path if needed
 import { useAnimeActions } from "../context/AnimeActions";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const AddToFavorites = ({ anime }) => {
@@ -19,9 +19,12 @@ const AddToFavorites = ({ anime }) => {
   };
 
   return (
+    <Tooltip title="Add to Favorites">
     <IconButton onClick={handleClick}>
       <FavoriteIcon color="primary" />
     </IconButton>
+    </Tooltip>
+
   );
 };
 

@@ -8,6 +8,7 @@ import AddToListButton from "./AddToList";
 import AddToInProgressButton from "./AddToInProgress";
 import AddToWatchLaterButton from "./AddToWatchLater";
 
+
 const AnimeCard = (props) => {
     const navigate = useNavigate();
     const search = useContext(SearchContext);

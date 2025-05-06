@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useAnimeActions } from "../context/AnimeActions"; 
 
@@ -30,9 +30,11 @@ const RemoveFromListButton = ({ anime, currentTab }) => {
   };
 
   return (
+    <Tooltip title="Remove form list">
     <IconButton onClick={handleRemove} color="error">
       <RemoveCircleIcon />
     </IconButton>
+    </Tooltip>
   );
 };
 

@@ -40,7 +40,7 @@ export const AnimeActionsProvider = ({ children, fetchAnimeList }) => {
     }
   };
 
-  const addToList = (anime) => addToCollection("animeLists", anime);
+  const addToList = (anime) => addToCollection("animeLists", anime, "listed");
   const addToWatchLater = (anime) => addToCollection("watchLaterAnime", anime);
 
   const removeFromList = async (collection, mal_id) => {
