@@ -2,16 +2,18 @@ import React from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useAnimeActions } from "../context/AnimeActions";
+import { useSnackbar } from "../context/SnackBar";
 
 const AddToWatchLaterButton = ({ anime }) => {
   const { addToWatchLater } = useAnimeActions();
+  const { showSnackbar } = useSnackbar();
 
   const handleAdd = async () => {
     const result = await addToWatchLater(anime);
     if (result.success) {
-      alert("Anime added to Watch Later!");
+      showSnackbar("Anime added to Watch Later!");
     } else {
-      alert("Failed to add to Watch Later.");
+      showSnackbar("Failed to add to Watch Later.", "error");
     }
   };
 

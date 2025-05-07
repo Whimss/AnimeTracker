@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {
-  AppBar, Box, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Avatar, Drawer, List, ListItem, ListItemText,ListItemIcon
+  AppBar, Box, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Avatar, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -145,17 +145,27 @@ function SearchAppBar() {
                 <Box sx={{ width: 250, bgcolor: 'primary.main' }} role="presentation">
                   <List>
                     <ListItem button onClick={() => {
+                      navigate('/');
+                      setDrawerOpen(false);
+                    }}>
+                      <ListItemText primary="Home" />
+                    </ListItem>
+                    <Divider sx={{ bgcolor: 'primary.contrastText' }} />
+
+                    <ListItem button onClick={() => {
                       navigate('/my-anime-list');
                       setDrawerOpen(false);
                     }}>
                       <ListItemText primary="My Anime List" />
                     </ListItem>
+                    <Divider sx={{ bgcolor: 'primary.contrastText' }} />
+
                     <ListItem button onClick={async () => {
                       await handleLogout();
                       setDrawerOpen(false);
                     }}>
                       <ListItemIcon>
-                        <LogoutIcon sx={{ color: 'primary.contrastText' }} /> {/* ensures visibility on primary background */}
+                        <LogoutIcon sx={{ color: 'primary.contrastText' }} />
                       </ListItemIcon>
                       <ListItemText primary="Logout" />
                     </ListItem>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { Snackbar as MuiSnackbar, Alert } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const SnackbarContext = createContext();
 
@@ -27,7 +28,7 @@ export const SnackbarProvider = ({ children }) => {
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: "100%" }}>
+        <Alert onClose={handleClose} severity={snackbar.severity}  icon={ <CheckCircleIcon sx={{ color: 'white' }} />} sx={{ width: "100%", backgroundColor: (theme) => theme.palette.primary.main, }}>
           {snackbar.message}
         </Alert>
       </MuiSnackbar>

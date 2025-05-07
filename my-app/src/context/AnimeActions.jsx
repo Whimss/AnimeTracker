@@ -5,7 +5,8 @@ import { useAuth } from "../components/AuthProvider";
 
 const AnimeActionsContext = createContext();
 
-export const AnimeActionsProvider = ({ children, fetchAnimeList }) => {
+export const AnimeActionsProvider = ({ children, fetchAnimeList = () => {} }) => {
+
   const { user } = useAuth();
 
   const addToCollection = async (collection, anime, status) => {
