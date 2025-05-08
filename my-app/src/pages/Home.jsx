@@ -21,20 +21,20 @@ const Home = () => {
     let allData = [];
     let currentPage = 1;
     let totalPages = 1;
-  
+
     try {
       while (currentPage <= totalPages) {
         const response = await search.searchByLetter(letter, currentPage);
         const pageData = response.data || [];
         allData = [...allData, ...pageData];
-  
+
         totalPages = response.pagination?.last_visible_page || 1;
         currentPage++;
-  
+
         // Delay to avoid rate limiting
         await sleep(500); // 500ms between requests (2 requests/second)
       }
-  
+
       allData.sort((a, b) => a.title.localeCompare(b.title));
       setAnimeList(allData);
       setTotalPages(Math.ceil(allData.length / 20));
@@ -68,7 +68,7 @@ const Home = () => {
   const handlePageChange = (event, value) => {
     setPage(value);
   };
- 
+
 
   return (
     <Grid container direction="column" justifyContent="center" alignItems="center">
@@ -89,24 +89,39 @@ const Home = () => {
       {/* Alphabet Buttons */}
       <div className="alphabet-buttons">
         {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'].map((letter) => (
-          <Button key={letter} onClick={() => handleLetterClick(letter)} variant="outlined" sx={{ margin: 0.5 }}>
+          <Button key={letter} onClick={() => handleLetterClick(letter)} variant="outlined" sx={{
+            margin: 0.5,
+            minWidth: 40,
+            height: 40,
+            borderRadius: '50%',
+            padding: 0,
+            textAlign: 'center',
+            lineHeight: '40px',
+
+            transition: 'background-color 0.3s ease',
+            '&:hover': {
+              backgroundColor: 'primary.main',
+              color: 'white',
+              borderColor: 'primary.main',
+            },
+          }}>
             {letter}
           </Button>
         ))}
       </div>
-      
+
 
       {/* Display Anime List */}
       <div className="anime-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-      {animeList.length > 0 ? (
-  animeList
-    .slice((page - 1) * 20, page * 20)
-    .map((anime) => (
-      <AnimeCard key={anime.mal_id} anime={anime} />
-    ))
-) : (
-  selectedLetter && <p>No anime found for letter "{selectedLetter}"</p>
-)}
+        {animeList.length > 0 ? (
+          animeList
+            .slice((page - 1) * 20, page * 20)
+            .map((anime) => (
+              <AnimeCard key={anime.mal_id} anime={anime} />
+            ))
+        ) : (
+          selectedLetter && <p>No anime found for letter "{selectedLetter}"</p>
+        )}
       </div>
 
       {/* Pagination */}

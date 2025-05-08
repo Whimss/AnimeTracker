@@ -11,6 +11,7 @@ import { useAuth } from '../components/AuthProvider';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import LogoutIcon from '@mui/icons-material/Logout';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 
 
@@ -113,28 +114,30 @@ function SearchAppBar() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <FormatListBulletedIcon />
           </IconButton>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Anime List Tracker
           </Typography>
 
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleSearchSubmit();
-                }
-              }}
-            />
-          </Search>
+          {user && (
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearchSubmit();
+                  }
+                }}
+              />
+            </Search>
+          )}
           {user && (
             <>
               <IconButton onClick={() => setDrawerOpen(true)} color="inherit" sx={{ ml: 2 }}>

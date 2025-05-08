@@ -19,3 +19,14 @@ background-color:#9999CC70;
 .home_iconButton{
     flex:0;
 }
+
+.alphabet-buttons{
+  min-width: 40px;
+  border-radius: 50%;
+  padding: 0;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+
+}
