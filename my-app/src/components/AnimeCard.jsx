@@ -7,6 +7,7 @@ import AddToFavoritesButton from "./AddToFavorites";
 import AddToListButton from "./AddToList";
 import AddToInProgressButton from "./AddToInProgress";
 import AddToWatchLaterButton from "./AddToWatchLater";
+import RateAnimeButton from "./rateAnime";
 
 
 const AnimeCard = (props) => {
@@ -41,6 +42,7 @@ const AnimeCard = (props) => {
                     <AddToWatchLaterButton anime={props.anime} />
                     <AddToInProgressButton anime={props.anime}/>
                 </Box>
+                <Box><RateAnimeButton anime={props.anime} /></Box>
             </Paper>
         </Grid>
     );

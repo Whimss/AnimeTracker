@@ -2,6 +2,7 @@ import React, { createContext, useContext } from "react";
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../components/AuthProvider";
+import { Rating } from "@mui/material";
 
 const AnimeActionsContext = createContext();
 
@@ -102,6 +103,27 @@ export const AnimeActionsProvider = ({ children, fetchAnimeList = () => {} }) =>
     }
   };
 
+  const rateAnime = async (mal_id, rating) => {
+  if (!user) return { success: false, message: "User not authenticated" };
+  try {
+    const docRef = doc(db, "animeLists", user.uid);
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      if (data[mal_id]) {
+        data[mal_id].rating = rating; // update rating
+        await setDoc(docRef, data);   // save updated object
+        fetchAnimeList();
+        return { success: true };
+      }
+    }
+    return { success: false, message: "Anime not found in list" };
+  } catch (error) {
+    console.error("Error rating anime:", error);
+    return { success: false, error };
+  }
+};
+
   return (
     <AnimeActionsContext.Provider
       value={{
@@ -110,7 +132,8 @@ export const AnimeActionsProvider = ({ children, fetchAnimeList = () => {} }) =>
         addToInProgress,
         addToWatchLater,
         removeFromList,
-        removeFromCollection
+        removeFromCollection,
+        rateAnime
       }}
     >
       {children}
