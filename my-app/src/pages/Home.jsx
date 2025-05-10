@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchContext } from '../context/search';
-import { FormControl, Input, IconButton, Grid, Button, Stack, Pagination } from '@mui/material';
+import { FormControl, Input, IconButton, Grid, Button, Stack, Pagination,CircularProgress,Typography } from '@mui/material';
 import SearchIcon from "@mui/icons-material/Search";
 import './Home.scss'
 import AnimeCard from '../components/AnimeCard';
@@ -14,6 +14,7 @@ const Home = () => {
   const [animeList, setAnimeList] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -23,23 +24,38 @@ const Home = () => {
     let totalPages = 1;
 
     try {
-      while (currentPage <= totalPages) {
-        const response = await search.searchByLetter(letter, currentPage);
-        const pageData = response.data || [];
-        allData = [...allData, ...pageData];
 
-        totalPages = response.pagination?.last_visible_page || 1;
+       setLoading(true);
+      // Initial request to get the first page and totalPages
+      const response = await search.searchByLetter(letter, currentPage);
+      const pageData = response.data || [];
+      totalPages = response.pagination?.last_visible_page || 1; // Set total pages based on the API response
+
+      // Add the first page's data to the list
+      allData = [...allData, ...pageData];
+
+      // Loop through remaining pages
+      while (currentPage < totalPages) {
         currentPage++;
+        const nextPageResponse = await search.searchByLetter(letter, currentPage);
+        const nextPageData = nextPageResponse.data || [];
+        allData = [...allData, ...nextPageData];
 
-        // Delay to avoid rate limiting
-        await sleep(500); // 500ms between requests (2 requests/second)
+        // Delay between requests to prevent rate-limiting
+        await sleep(500);
       }
 
+      // Sort the data alphabetically
       allData.sort((a, b) => a.title.localeCompare(b.title));
+
+      // Update the anime list state
       setAnimeList(allData);
-      setTotalPages(Math.ceil(allData.length / 20));
+      setTotalPages(Math.ceil(allData.length / 50)); // Set the total pages based on the total length of data
+
     } catch (error) {
       console.error('Error fetching all anime by letter:', error);
+    } finally {
+      setLoading(false); // Stop loading once the request is complete
     }
   };
 
@@ -112,17 +128,25 @@ const Home = () => {
 
 
       {/* Display Anime List */}
-      <div className="anime-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {animeList.length > 0 ? (
-          animeList
-            .slice((page - 1) * 20, page * 20)
-            .map((anime) => (
-              <AnimeCard key={anime.mal_id} anime={anime} />
+      {loading && (
+        <div style={{ textAlign: 'center', marginTop: 20 }}>
+          <CircularProgress sx={{color:'secondary.main'}} />
+          <Typography variant="h6" style={{ marginTop: 10 }}>This may take a while...</Typography>
+        </div>
+      )}
+
+      {/* Display Anime List */}
+      {!loading && (
+        <div className="anime-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {animeList.length > 0 ? (
+            animeList.slice((page - 1) * 50, page * 50).map((anime, index) => (
+              <AnimeCard key={`${anime.mal_id}-${index}`} anime={anime} />
             ))
-        ) : (
-          selectedLetter && <p>No anime found for letter "{selectedLetter}"</p>
-        )}
-      </div>
+          ) : (
+            selectedLetter && <p>No anime found for letter "{selectedLetter}"</p>
+          )}
+        </div>
+      )}
 
       {/* Pagination */}
       <Stack spacing={2} sx={{ marginTop: 2 }}>

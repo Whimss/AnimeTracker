@@ -29,7 +29,7 @@ const AnimeCard = (props) => {
     const imageUrl = props.anime.images?.jpg?.image_url || 'default-image-url.png';  // Use a default image if not available
 
     return (
-        <Grid className="animeCard_container" container item xs={12}>
+        <Grid className="animeCard_container" >
             <Paper className="animeCard_paper">
                 <img src={imageUrl} alt={title} style={{ maxHeight: 300 }} />
                 <Typography variant="h5" component="h2">{title}</Typography>
