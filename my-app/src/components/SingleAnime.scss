@@ -1,13 +1,64 @@
-.SingleAnimeContainer{
-    margin-top: 50px !important;
-    margin-left: 50px;
+/* Container for the whole section */
+.SingleAnimeContainer {
+  width: 75%; /* Set width to 75% instead of 80% */
+  padding: 40px 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin: 0 auto; /* Centers the container */
 }
 
-.SingleAnimeImg{
-    border-radius: 10px;
+/* Center the image and give it some bottom margin */
+.SingleAnimeImageWrapper {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.SingleAnimeDescription{
-    max-width: 400px;
-    padding:20px;
+/* Style for the image */
+.SingleAnimeImg {
+  border-radius: 10px;
+  max-width: 300px; /* Max width for image */
+  width: 100%; /* Make sure it is responsive */
+  height: auto;
+  margin-top: 50px;
+}
+
+/* Paper-like container for each section */
+.SingleAnimePaper {
+  box-sizing: border-box;
+  padding: 20px; /* Add some padding */
+  margin-bottom: 20px; /* Space between sections */
+  background-color: white; /* Ensure a background color */
+  border-radius: 8px; /* Rounded corners */
+  
+}
+
+/* Additional Typographic styles */
+.SingleAnimeTitleWrapper {
+  text-align: center;
+  margin-bottom: 4rem; /* Spacing between the title and other sections */
+}
+.SingleAnimeInfo{
+    .SingleAnimeInfo {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+
+  // Make it stack on small screens
+  flex-direction: row;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.SingleAnimeColumn {
+  flex: 1;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; 
+}
 }

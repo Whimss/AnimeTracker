@@ -13,8 +13,6 @@ import { auth } from '../firebase';
 import LogoutIcon from '@mui/icons-material/Logout';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
-
-
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -59,9 +57,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function SearchAppBar() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
-  const search = useContext(SearchContext)
+  const search = useContext(SearchContext);
   const { user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerAnchor, setDrawerAnchor] = useState('right'); // State to track drawer position
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -84,7 +83,6 @@ function SearchAppBar() {
     }
   };
 
-
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -102,6 +100,11 @@ function SearchAppBar() {
     });
   };
 
+  // Function to toggle drawer side based on the clicked button
+  const handleDrawerOpen = (anchorSide) => {
+    setDrawerAnchor(anchorSide); // Set drawer side (left or right)
+    setDrawerOpen(true);
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -113,6 +116,7 @@ function SearchAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => handleDrawerOpen('left')} // Open drawer from left when icon is clicked
           >
             <FormatListBulletedIcon />
           </IconButton>
@@ -140,11 +144,11 @@ function SearchAppBar() {
           )}
           {user && (
             <>
-              <IconButton onClick={() => setDrawerOpen(true)} color="inherit" sx={{ ml: 2 }}>
+              <IconButton onClick={() => handleDrawerOpen('right')} color="inherit" sx={{ ml: 2 }}>
                 <Avatar alt={user.displayName || 'User'} src={user.photoURL || ''} />
               </IconButton>
 
-              <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+              <Drawer anchor={drawerAnchor} open={drawerOpen} onClose={() => setDrawerOpen(false)}>
                 <Box sx={{ width: 250, bgcolor: 'primary.main' }} role="presentation">
                   <List>
                     <ListItem button onClick={() => {
@@ -175,10 +179,8 @@ function SearchAppBar() {
                   </List>
                 </Box>
               </Drawer>
-
             </>
           )}
-
         </Toolbar>
       </AppBar>
     </Box>

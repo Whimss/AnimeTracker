@@ -34,7 +34,6 @@ const AnimeCard = (props) => {
             <Paper className="animeCard_paper">
                 <img src={imageUrl} alt={title} style={{ maxHeight: 300 }} />
                 <Typography variant="h5" component="h2">{title}</Typography>
-                <Typography variant="body2" component="h2" paragraph={true}>{synopsis}</Typography>
                 <Link component="button" variant="body1" style={{ marginBottom: 0 }} onClick={onClickHandler}>Learn More</Link>
                 <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', mt: 1 }}>
                     <AddToListButton anime={props.anime} />
